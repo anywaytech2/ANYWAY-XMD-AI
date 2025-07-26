@@ -2,45 +2,48 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const { zokou } = require("../framework/zokou");
 
-zokou({ nomCom: "repo", catégorie:"Général", reaction: "💥", nomFichier: __filename }, async (dest, zk, commandeOptions) => {
-  const githubRepo = 'https://api.github.com/repos/Leonard1tech/LEONARD-MD';
-  const img = 'https://files.catbox.moe/idioc5.jpg';
+zokou({ nomCom: "repo", catégorie: "Général", reaction: "🚀", nomFichier: __filename }, async (dest, zk, commandeOptions) => {
+  const repoApiUrl = 'https://api.github.com/repos/anywaytech2/ANYWAY-XMD-AI-';
+  const bannerImage = 'https://files.catbox.moe/b2ymep.jpeg';
 
   try {
-    const response = await fetch(githubRepo);
-    const data = await response.json();
+    const response = await fetch(repoApiUrl);
+    const repoData = await response.json();
 
-    if (data) {
-      const repoInfo = {
-        stars: data.stargazers_count,
-        forks: data.forks_count,
-        lastUpdate: data.updated_at,
-        owner: data.owner.login,
-      };
+    if (repoData) {
+      const starsCount = repoData.stargazers_count;
+      const forksCount = repoData.forks_count;
+      const lastUpdated = new Date(repoData.updated_at).toLocaleDateString('en-GB');
+      const createdOn = new Date(repoData.created_at).toLocaleDateString('en-GB');
+      const repositoryLink = repoData.html_url;
 
-      const releaseDate = new Date(data.created_at).toLocaleDateString('en-GB');
-      const lastUpdateDate = new Date(data.updated_at).toLocaleDateString('en-GB');
+      const message = `🚀 *ANYWAY XMD - PROJECT INSIGHTS* 🚀
 
-      const gitdata = `*hellow whatsaap user
-this is* *leonard_md.*\n support our channel *by*,  https://whatsapp.com/channel/0029VakLfckBlHpYVxryFJ14
+🔹 GitHub Repository:  
+${repositoryLink}
 
-_________● *ʟᴇᴏɴᴀʀᴅ* ●____________
-|💥 *ʀᴇᴘᴏsɪᴛᴏʀʏ:* ${data.html_url}
-|🌟 *sᴛᴀʀs:* ${repoInfo.stars}
-|🍽 *ғᴏʀᴋs:* ${repoInfo.forks}
-|⌚️ *ʀᴇʟᴇᴀsᴇ ᴅᴀᴛᴇ:* ${releaseDate}
-|🕐 *ᴜᴘᴅᴀᴛᴇ ᴏɴ:* ${repoInfo.lastUpdate}
-|👨‍💻 *ᴏᴡɴᴇʀ:* *ʟᴇᴏɴᴀʀᴅ ᴛᴇᴄʜ*
-|💞 *ᴛʜᴇᴍᴇ:* *ʟᴇᴏɴᴀʀᴅ*
-|🥰*ᴏɴʟʏ ɢᴏᴅ ᴄᴀɴ ᴊᴜᴅɢᴇ ᴍᴇ!👑*
-__________________________________
-            *ᴍᴀᴅᴇ ᴡɪᴛʜ ʟᴇᴏɴᴀʀᴅ ᴛᴇᴄʜ*`;
+⭐ Stargazers: ${starsCount}  
+🍴 Forks: ${forksCount}
 
-      await zk.sendMessage(dest, { image: { url: img }, caption: gitdata });
+📅 Project Started: ${createdOn}  
+🛠 Last Updated: ${lastUpdated}
+
+👤 Managed by: *ANYWAY TECH*
+
+📣 Follow our update channel:  
+https://whatsapp.com/channel/0029VagWQ255q08VTCRQKP09
+
+💬 Join the developer group for help/discussion:  
+https://chat.whatsapp.com/L9rLWs5VUg0Jx0qAynE2Tj?mode=ac_t
+
+🔧 Built with precision by ANYWAY TECH  
+─────────────────────────────`;
+
+      await zk.sendMessage(dest, { image: { url: bannerImage }, caption: message });
     } else {
-      console.log("Could not fetch data");
+      console.error("Unable to retrieve repository information.");
     }
-  } catch (error) {
-    console.log("Error fetching data:", error);
+  } catch (err) {
+    console.error("Failed to fetch repository details:", err);
   }
 });
