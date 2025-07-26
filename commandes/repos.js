@@ -1,49 +1,44 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const { zokou } = require("../framework/zokou");
+// ANYWAY-XMD BOT REPO COMMAND
 
-zokou({ nomCom: "repo", catégorie: "Général", reaction: "🚀", nomFichier: __filename }, async (dest, zk, commandeOptions) => {
-  const repoApiUrl = 'https://api.github.com/repos/anywaytech2/ANYWAY-XMD-AI-';
-  const bannerImage = 'https://files.catbox.moe/b2ymep.jpeg';
+const { command } = require('../../utils') const fetch = require('node-fetch')
 
-  try {
-    const response = await fetch(repoApiUrl);
-    const repoData = await response.json();
+command({ pattern: 'repo', desc: 'Sends repo and support info', type: 'info', async handler(m) { const image = 'https://files.catbox.moe/b2ymep.jpeg' const githubRepo = 'https://api.github.com/repos/anywaytech2/ANYWAY-XMD-AI-'
 
-    if (repoData) {
-      const starsCount = repoData.stargazers_count;
-      const forksCount = repoData.forks_count;
-      const lastUpdated = new Date(repoData.updated_at).toLocaleDateString('en-GB');
-      const createdOn = new Date(repoData.created_at).toLocaleDateString('en-GB');
-      const repositoryLink = repoData.html_url;
+try {
+  const response = await fetch(githubRepo)
+  const data = await response.json()
 
-      const message = `🚀 *ANYWAY XMD - PROJECT INSIGHTS* 🚀
+  if (!data || data.message === 'Not Found') {
+    await m.bot.sendMessage(m.chat, { text: '⚠️ Repository info not found.' })
+    return
+  }
 
-🔹 GitHub Repository:  
-${repositoryLink}
+  const stars = data.stargazers_count || 0
+  const forks = data.forks_count || 0
+  const releaseDate = new Date(data.created_at).toLocaleDateString('en-GB')
+  const updateDate = new Date(data.updated_at).toLocaleDateString('en-GB')
 
-⭐ Stargazers: ${starsCount}  
-🍴 Forks: ${forksCount}
+  const caption = `🌐 *ANYWAY-XMD SYSTEM - REPO INFO*
 
-📅 Project Started: ${createdOn}  
-🛠 Last Updated: ${lastUpdated}
+📦 Repository: https://github.com/anywaytech2/ANYWAY-XMD-AI- ⭐ Stars: ${stars} 🍴 Forks: ${forks}
 
-👤 Managed by: *ANYWAY TECH*
+🗓️ Created: ${releaseDate} 🔄 Updated: ${updateDate} 👨‍💻 Developed by: ANYWAY TECH
 
-📣 Follow our update channel:  
+━━━━━━━━━━━━━━━━━━━━━━━ 📢 Follow our official channel for tutorials and updates:
 https://whatsapp.com/channel/0029VagWQ255q08VTCRQKP09
 
-💬 Join the developer group for help/discussion:  
-https://chat.whatsapp.com/L9rLWs5VUg0Jx0qAynE2Tj?mode=ac_t
+👥 Join our WhatsApp Support Group:
+https://chat.whatsapp.com/L9rLWs5VUg0Jx0qAynE2Tj?mode=ac_t`
 
-🔧 Built with precision by ANYWAY TECH  
-─────────────────────────────`;
+await m.bot.sendMessage(m.chat, {
+    image: { url: image },
+    caption,
+  })
 
-      await zk.sendMessage(dest, { image: { url: bannerImage }, caption: message });
-    } else {
-      console.error("Unable to retrieve repository information.");
-    }
-  } catch (err) {
-    console.error("Failed to fetch repository details:", err);
-  }
-});
+} catch (error) {
+  console.error('Error fetching repo:', error)
+  await m.bot.sendMessage(m.chat, { text: '❌ Error retrieving repo info.' })
+}
+
+} })
+
