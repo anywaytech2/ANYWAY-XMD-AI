@@ -1,184 +1,82 @@
 const util = require('util');
-
 const fs = require('fs-extra');
-
 const { zokou } = require(__dirname + "/../framework/zokou");
-
 const { format } = require(__dirname + "/../framework/mesfonctions");
-
 const os = require("os");
-
 const moment = require("moment-timezone");
-
 const s = require(__dirname + "/../set");
 
-
-
 zokou({ nomCom: "menu2", categorie: "Menu" }, async (dest, zk, commandeOptions) => {
-
-    let { ms, repondre ,prefixe,nomAuteurMessage,mybotpic} = commandeOptions;
-
+    let { ms, repondre, prefixe, nomAuteurMessage, mybotpic } = commandeOptions;
     let { cm } = require(__dirname + "/../framework//zokou");
-
+    
     var coms = {};
+    var mode = s.MODE.toLowerCase() !== "yes" ? "PRIVATE" : "PUBLIC";
 
-    var mode = "public";
-
-    
-
-    if ((s.MODE).toLocaleLowerCase() != "yes") {
-
-        mode = "private";
-
-    }
-
-
-
-
-
-    
-
-
-
-    cm.map(async (com, index) => {
-
-        if (!coms[com.categorie])
-
-            coms[com.categorie] = [];
-
+    cm.map(async (com) => {
+        if (!coms[com.categorie]) coms[com.categorie] = [];
         coms[com.categorie].push(com.nomCom);
-
     });
-
-
 
     moment.tz.setDefault(s.TZ);
 
+    const temps = moment().format('HH:mm:ss');
+    const date = moment().format('DD/MM/YYYY');
 
+    // Info Header
+    let infoMsg = `
+╔════════════════════════════╗
+║        🌟 𝗔𝗡𝗬𝗪𝗔𝗬 𝗫𝗠𝗗 🌟        ║
+╠════════════════════════════╣
+║ 🔖 MODE   : ${mode}
+║ 👤 OWNER  : ${s.OWNER_NAME.toUpperCase()}
+╚════════════════════════════╝\n\n`;
 
-// Créer une date et une heure en GMT
+    // Menu Main
+    let menuMsg = `
+╔═━━━━「 🤖 𝗠𝗔𝗜𝗡 𝗠𝗘𝗡𝗨 」━━━━═╗
+║ 📅 DATE : ${date}
+║ 🕒 TIME : ${temps}
+║ 💡 BOT  : ANYWAY XMD
+║ 🧠 TECH : ANYWAY TECH
+╚════════════════════════════╝\n`;
 
-const temps = moment().format('HH:mm:ss');
-
-const date = moment().format('DD/MM/YYYY');
-
-
-
-  let infoMsg =  `
-
-┏━━ ʟᴇᴏɴᴀʀᴅ ᴍᴅ ━━┓
-┃   ᴍᴏᴅᴇ: ${mode}
-┃   ᴜsᴇʀ : ${s.OWNER_NAME}
-┃
-┣━leonard md new vision 𒈒━➠
-┗━━━𒈒by Leonard Tech𒈒━━┛\n\n`;
-
-
-    
-
-let menuMsg = `
-┏━━━━━━━━━━━━━━┓
-┣●ʟᴇᴏɴᴀʀᴅ ᴍᴅ  
-┣●ʙʏ ʟᴇᴏɴᴀʀᴅ ᴛᴇᴄʜ
-┗━━━━━━━━━━━━━━┛\n
-
-
-
-
-leonard md cmds𒈒
-`;
-
-
-
+    // List Commands
     for (const cat in coms) {
-
-        menuMsg += `┏━━━━━⚼ ${cat}`;
-
+        menuMsg += `\n📂 *${cat.toUpperCase()}*\n`;
         for (const cmd of coms[cat]) {
-
-            menuMsg += `
-┃● ${cmd}`;
-
+            menuMsg += `├─ 📌 ${prefixe}${cmd}\n`;
         }
-
-        menuMsg += `
-┗━━━━━━━━━━━━━━┛\n`
-
     }
 
-
-
+    // Footer
     menuMsg += `
+╔═━━━━「 🔧 𝗕𝗢𝗧 𝗜𝗡𝗙𝗢 」━━━━═╗
+║ 🤴 BOT BY   : ANYWAY KING
+║ 🛠️ DEVELOPER: ANYWAY TECH
+╚════════════════════════════╝\n`;
 
-
-︎┏━━━━━━━━━━━━━━┓
-️┣❏ʟᴇᴏɴᴀʀᴅ ᴍᴅ 
-┣❏ʙʏ ᴋɪɴɢ ʟᴇᴏɴᴀʀᴅ 
-┗━━━━━━━━━━━━━━┛\n
-
-
-┏━━━━━━━━━━━━━━┓
-┃●ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʟᴇᴏɴᴀʀᴅ ᴛᴇᴄʜ 
-┗━━━━━━━━━━━━━━┛\n
-
-
-`;
-
-
-
-   var lien = mybotpic();
-
-
-
-   if (lien.match(/\.(mp4|gif)$/i)) {
+    const lien = mybotpic();
 
     try {
-
-        zk.sendMessage(dest, { video: { url: lien }, caption:infoMsg + menuMsg, footer: "Je suis *LEONARD-MD*, déveloper Fredie" , gifPlayback : true }, { quoted: ms });
-
-    }
-
-    catch (e) {
-
+        if (lien.match(/\.(mp4|gif)$/i)) {
+            await zk.sendMessage(dest, {
+                video: { url: lien },
+                caption: infoMsg + menuMsg,
+                footer: "I am *ANYWAY XMD*, developed by Anyway Tech",
+                gifPlayback: true
+            }, { quoted: ms });
+        } else if (lien.match(/\.(jpeg|png|jpg)$/i)) {
+            await zk.sendMessage(dest, {
+                image: { url: lien },
+                caption: infoMsg + menuMsg,
+                footer: "I am *ANYWAY XMD*, developed by Anyway Tech"
+            }, { quoted: ms });
+        } else {
+            repondre(infoMsg + menuMsg);
+        }
+    } catch (e) {
         console.log("🥵🥵 Menu error " + e);
-
         repondre("🥵🥵 Menu error " + e);
-
     }
-
-} 
-
-// Vérification pour .jpeg ou .png
-
-else if (lien.match(/\.(jpeg|png|jpg)$/i)) {
-
-    try {
-
-        zk.sendMessage(dest, { image: { url: lien }, caption:infoMsg + menuMsg, footer: "Je suis *TKM-bot*, déveloper cod3uchiha" }, { quoted: ms });
-
-    }
-
-    catch (e) {
-
-        console.log("🥵🥵 Menu error " + e);
-
-        repondre("🥵🥵 Menu error " + e);
-
-    }
-
-} 
-
-else {
-
-    
-
-    repondre(infoMsg + menuMsg);
-
-    
-
-}
-
-
-
 });
-          
