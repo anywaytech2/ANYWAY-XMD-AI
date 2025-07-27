@@ -127,14 +127,14 @@ const date = moment().format('DD/MM/YYYY');
 
     if (lien.match(/\.(mp4|gif)$/i)) {
         try {
-            zk.sendMessage(dest, { video: { url: lien }, caption: infoMsg + menuMsg, footer: "Je suis *Leonard-MD*, développé par LEONARD-TECH" , gifPlayback : true }, { quoted: ms });
+            zk.sendMessage(dest, { video: { url: lien }, caption: infoMsg + menuMsg, footer: "Je suis *Anyway-XMD*, développé par ANYWAY-TECH" , gifPlayback : true }, { quoted: ms });
         } catch (e) {
             console.log("🥵🥵 Menu erreur " + e);
             repondre("🥵🥵 Menu erreur " + e);
         }
     } else if (lien.match(/\.(jpeg|png|jpg)$/i)) {
         try {
-            zk.sendMessage(dest, { image: { url: lien }, caption: infoMsg + menuMsg, footer: "Je suis *Leonard-MD*, développé par LEONARD-TECH" }, { quoted: ms });
+            zk.sendMessage(dest, { image: { url: lien }, caption: infoMsg + menuMsg, footer: "Je suis *Anyway-XMD*, développé par ANYWAY-TECH" }, { quoted: ms });
         } catch (e) {
             console.log("🥵🥵 Menu erreur " + e);
             repondre("🥵🥵 Menu erreur " + e);
