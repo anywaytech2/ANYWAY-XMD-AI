@@ -101,7 +101,7 @@
 
 ## 💬 𝐇𝐄𝐋𝐏 & 𝐒𝐔𝐏𝐏𝐎𝐑𝐓
 
-- Need help? <a href="https://wa.me/0678892560"><img src="https://img.shields.io/badge/Message%20on%20WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white"></a>
+- Need help? <a href="https://wa.me/+255678892560"><img src="https://img.shields.io/badge/Message%20on%20WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white"></a>
 
 - Join our channel: <a href="https://whatsapp.com/channel/0029VagWQ255q08VTCRQKP09"><img src="https://img.shields.io/badge/Join%20WhatsApp%20Channel-128C7E?style=for-the-badge&logo=whatsapp&logoColor=white"></a>
 
