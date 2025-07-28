@@ -3,20 +3,58 @@
   "description": "ANYWAY XMD WhatsApp Bot developed by ANYWAY TECH",
   "repository": "https://github.com/anywaytech2/ANYWAY-XMD-AI-",
   "logo": "https://files.catbox.moe/oyw1oa.jpeg",
-  "keywords": ["whatsapp", "bot", "anyway", "xmd", "multi-device"],
+  "keywords": [
+    "whatsapp",
+    "bot",
+    "anyway",
+    "xmd",
+    "multi-device"
+  ],
   "env": {
-    "BOT_NAME": { "description": "Your Bot Name", "value": "ANYWAY XMD" },
-    "OWNER_NAME": { "description": "Owner Name", "value": "MR ANYWAY" },
-    "OWNER_NUMBER": { "description": "Owner WhatsApp Number", "value": "255678892560" },
-    "PUBLIC_MODE": { "description": "Bot Public Mode", "value": "true" },
-    "AUTO_READ": { "description": "Auto Read Messages", "value": "true" },
-    "AUTO_REACT": { "description": "Auto React to Messages", "value": "true" },
-    "AUTO_VIEW_STATUS": { "description": "Auto View Status", "value": "true" },
-    "AUTO_LIKE_STATUS": { "description": "Auto Like Status", "value": "true" },
-    "LIKE_EMOJI": { "description": "Emoji to Use for Reactions and Likes", "value": "😎" },
-    "ANTI_DELETE": { "description": "Prevent Message Deletion", "value": "true" }
+    "BOT_NAME": {
+      "description": "Your Bot Name",
+      "value": "ANYWAY XMD"
+    },
+    "OWNER_NAME": {
+      "description": "Owner Name",
+      "value": "MR ANYWAY"
+    },
+    "OWNER_NUMBER": {
+      "description": "Owner WhatsApp Number (with country code)",
+      "value": "255678892560"
+    },
+    "PUBLIC_MODE": {
+      "description": "Enable public bot mode (true/false)",
+      "value": "true"
+    },
+    "AUTO_READ": {
+      "description": "Enable auto read for incoming messages",
+      "value": "true"
+    },
+    "AUTO_REACT": {
+      "description": "Enable auto reaction to messages",
+      "value": "true"
+    },
+    "AUTO_VIEW_STATUS": {
+      "description": "Enable auto view of WhatsApp status",
+      "value": "true"
+    },
+    "AUTO_LIKE_STATUS": {
+      "description": "Enable auto like on viewed status",
+      "value": "true"
+    },
+    "LIKE_EMOJI": {
+      "description": "Emoji to use for auto reactions and status likes",
+      "value": "😎"
+    },
+    "ANTI_DELETE": {
+      "description": "Enable anti-delete (recover deleted messages)",
+      "value": "true"
+    }
   },
   "buildpacks": [
-    { "url": "heroku/nodejs" }
+    {
+      "url": "heroku/nodejs"
+    }
   ]
 }
