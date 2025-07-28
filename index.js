@@ -1,115 +1,47 @@
-require('dotenv').config()
-const { default: makeWASocket, useSingleFileAuthState, DisconnectReason, fetchLatestBaileysVersion, delay } = require("@adiwajshing/baileys")
-const P = require('pino')
-const qrcode = require('qrcode-terminal')
+// index.js require("dotenv").config(); const { default: makeWASocket, DisconnectReason, useMultiFileAuthState } = require("@whiskeysockets/baileys"); const fs = require("fs-extra"); const P = require("pino"); const chalk = require("chalk"); const figlet = require("figlet"); const moment = require("moment");
 
-const { state, saveState } = useSingleFileAuthState('./session.json')
+// Load config const config = process.env;
 
-async function startBot() {
-  const { version } = await fetchLatestBaileysVersion()
-  const sock = makeWASocket({
-    version,
-    auth: state,
-    printQRInTerminal: true,
-    logger: P({ level: 'silent' }),
-    patchMessageBeforeSending: (message) => {
-      const requiresPatch = !!(
-        message.buttonsMessage ||
-        message.templateMessage ||
-        message.listMessage
-      )
-      if (requiresPatch) {
-        message = {
-          viewOnceMessage: {
-            message,
-          },
-        }
-      }
-      return message
-    }
-  })
+// Setup terminal display console.clear(); console.log(chalk.green(figlet.textSync(config.BOT_NAME || "ANYWAY XMD"))); console.log(chalk.yellow(Bot Started at ${moment().format("HH:mm:ss")}));
 
-  sock.ev.on('connection.update', (update) => {
-    const { connection, lastDisconnect, qr } = update
-    if (qr) {
-      qrcode.generate(qr, { small: true })
-      console.log('Scan QR code above to login')
-    }
-    if (connection === 'close') {
-      const shouldReconnect = (lastDisconnect.error)?.output?.statusCode !== DisconnectReason.loggedOut
-      console.log('Connection closed. Reconnecting:', shouldReconnect)
-      if (shouldReconnect) startBot()
-    }
-    if (connection === 'open') {
-      console.log('Connected to WhatsApp!')
-    }
-  })
+// Load features const autoRead = config.AUTO_READ_MESSAGES === "yes"; const autoReact = config.AUTO_REACT_MESSAGE === "yes"; const autoLikeStatus = config.AUTO_LIKE_STATUS === "yes"; const emojiLike = config.EMOJI_LIKE || "💚"; const antiDelete = config.ANTI_DELETE_MESSAGE === "yes"; const autoBlock = config.AUTO_BLOCK === "yes"; const anticall = config.ANTICALL === "yes"; const presenceType = config.PRESENCE || "1";
 
-  sock.ev.on('messages.upsert', async (m) => {
-    if (!m.messages) return
-    const msg = m.messages[0]
-    if (!msg.message) return
-    if (msg.key && msg.key.remoteJid === 'status@broadcast') {
-      if (process.env.AUTO_READ_STATUS === 'yes') {
-        await sock.readMessages([msg.key])
-      }
-      if (process.env.AUTO_LIKE_STATUS === 'yes') {
-        try {
-          const emoji = process.env.EMOJI_LIKE || '💚'
-          await sock.sendMessage(msg.key.remoteJid, { react: { text: emoji, key: msg.key } })
-        } catch (e) {
-          console.log('Failed to like status:', e)
-        }
-      }
-      return
-    }
+// Bot startup const startBot = async () => { const { state, saveCreds } = await useMultiFileAuthState("session"); const sock = makeWASocket({ printQRInTerminal: true, auth: state, logger: P({ level: "silent" }), browser: ["ANYWAY XMD", "Chrome", "1.0"], });
 
-    // Auto read messages
-    if (process.env.AUTO_READ_MESSAGES === 'yes') {
-      try {
-        await sock.readMessages([msg.key])
-      } catch {}
-    }
+// Presence setup const presenceMap = { "1": "available", "2": "composing", "3": "recording", }; sock.ev.on("connection.update", ({ connection, lastDisconnect }) => { if (connection === "close") { const reason = lastDisconnect?.error?.output?.statusCode; if (reason === DisconnectReason.loggedOut) { console.log("Logged out, please scan again."); } else { startBot(); } } else if (connection === "open") { console.log(chalk.green("Bot connected successfully.")); } });
 
-    // Auto react message in private chats
-    if (process.env.AUTO_REACT_MESSAGE === 'yes' && msg.key.fromMe === false && msg.key.remoteJid.endsWith('@s.whatsapp.net')) {
-      try {
-        const emoji = process.env.EMOJI_LIKE || '💚'
-        await sock.sendMessage(msg.key.remoteJid, { react: { text: emoji, key: msg.key } })
-      } catch {}
-    }
+sock.ev.on("creds.update", saveCreds);
 
-    // Anti delete message
-    if (process.env.ANTI_DELETE_MESSAGE === 'yes') {
-      sock.ev.on('messages.delete', async (deletedMessages) => {
-        for (const deleted of deletedMessages) {
-          if (!deleted.key.fromMe) {
-            const chatId = deleted.key.remoteJid
-            const msgId = deleted.key.id
-            try {
-              await sock.sendMessage(chatId, {
-                text: `Message deleted detected! Original message:\n\n${deleted.message ? JSON.stringify(deleted.message) : '[unknown]'}`,
-                contextInfo: { mentionedJid: [deleted.key.participant || deleted.key.remoteJid] }
-              })
-            } catch {}
-          }
-        }
-      })
-    }
+sock.ev.on("messages.upsert", async ({ messages, type }) => { if (!messages || !messages[0]) return; const msg = messages[0]; if (!msg.message) return;
 
-    // TODO: Add more features here like chatbot, anti-call, etc.
-  })
+const from = msg.key.remoteJid;
+const sender = msg.key.participant || msg.key.remoteJid;
 
-  sock.ev.on('call', async (call) => {
-    if (process.env.ANTICALL === 'yes') {
-      try {
-        await sock.rejectCall(call.callId)
-      } catch {}
-    }
-  })
+// Auto read messages
+if (autoRead) await sock.readMessages([msg.key]);
 
-  // Save auth state on changes
-  sock.ev.on('creds.update', saveState)
+// Presence
+if (presenceType in presenceMap) {
+  await sock.sendPresenceUpdate(presenceMap[presenceType], from);
 }
 
-startBot()
+// Auto react
+if (autoReact) {
+  await sock.sendMessage(from, {
+    react: {
+      text: "✅",
+      key: msg.key,
+    },
+  });
+}
+
+});
+
+// Anti-delete if (antiDelete) { sock.ev.on("messages.delete", async (del) => { console.log(chalk.red("A message was deleted!")); // You can add custom restore or logging here }); }
+
+// Auto like status if (autoLikeStatus) { sock.ev.on("status.update", async ({ statuses }) => { for (const status of statuses) { if (status.status) { await sock.sendMessage(status.jid, { react: { text: emojiLike, key: { remoteJid: status.jid, id: status.id, fromMe: false, }, }, }); } } }); }
+
+// Anti call if (anticall) { sock.ev.on("call", async ({ from }) => { await sock.rejectCall(from); if (autoBlock) { await sock.updateBlockStatus(from, "block"); } }); } };
+
+startBot();
+
