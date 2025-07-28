@@ -1,55 +1,115 @@
-const { default: makeWASocket, useSingleFileAuthState } = require('@adiwajshing/baileys');
-const { Boom } = require('@hapi/boom');
-const fs = require('fs-extra');
-const dotenv = require('dotenv');
-dotenv.config();
+require('dotenv').config()
+const { default: makeWASocket, useSingleFileAuthState, DisconnectReason, fetchLatestBaileysVersion, delay } = require("@adiwajshing/baileys")
+const P = require('pino')
+const qrcode = require('qrcode-terminal')
 
-const { state, saveState } = useSingleFileAuthState('./auth_info.json');
-const chalk = require('chalk');
+const { state, saveState } = useSingleFileAuthState('./session.json')
 
-const connect = async () => {
+async function startBot() {
+  const { version } = await fetchLatestBaileysVersion()
   const sock = makeWASocket({
+    version,
     auth: state,
-    printQRInTerminal: true
-  });
+    printQRInTerminal: true,
+    logger: P({ level: 'silent' }),
+    patchMessageBeforeSending: (message) => {
+      const requiresPatch = !!(
+        message.buttonsMessage ||
+        message.templateMessage ||
+        message.listMessage
+      )
+      if (requiresPatch) {
+        message = {
+          viewOnceMessage: {
+            message,
+          },
+        }
+      }
+      return message
+    }
+  })
 
-  sock.ev.on('creds.update', saveState);
+  sock.ev.on('connection.update', (update) => {
+    const { connection, lastDisconnect, qr } = update
+    if (qr) {
+      qrcode.generate(qr, { small: true })
+      console.log('Scan QR code above to login')
+    }
+    if (connection === 'close') {
+      const shouldReconnect = (lastDisconnect.error)?.output?.statusCode !== DisconnectReason.loggedOut
+      console.log('Connection closed. Reconnecting:', shouldReconnect)
+      if (shouldReconnect) startBot()
+    }
+    if (connection === 'open') {
+      console.log('Connected to WhatsApp!')
+    }
+  })
 
-  sock.ev.on('messages.upsert', async ({ messages }) => {
-    const msg = messages[0];
-    if (!msg.message) return;
-    const from = msg.key.remoteJid;
-
-    // Auto Read
-    if (process.env.AUTO_READ === 'true') {
-      await sock.readMessages([msg.key]);
+  sock.ev.on('messages.upsert', async (m) => {
+    if (!m.messages) return
+    const msg = m.messages[0]
+    if (!msg.message) return
+    if (msg.key && msg.key.remoteJid === 'status@broadcast') {
+      if (process.env.AUTO_READ_STATUS === 'yes') {
+        await sock.readMessages([msg.key])
+      }
+      if (process.env.AUTO_LIKE_STATUS === 'yes') {
+        try {
+          const emoji = process.env.EMOJI_LIKE || '💚'
+          await sock.sendMessage(msg.key.remoteJid, { react: { text: emoji, key: msg.key } })
+        } catch (e) {
+          console.log('Failed to like status:', e)
+        }
+      }
+      return
     }
 
-    // Auto React
-    if (process.env.AUTO_REACT === 'true') {
-      await sock.sendMessage(from, { react: { text: process.env.LIKE_EMOJI || '💚', key: msg.key }});
+    // Auto read messages
+    if (process.env.AUTO_READ_MESSAGES === 'yes') {
+      try {
+        await sock.readMessages([msg.key])
+      } catch {}
     }
-  });
 
-  // Simulated Auto View & Like Status
-  if (process.env.AUTO_VIEW_STATUS === 'true') {
-    console.log(chalk.green('[AUTO VIEW STATUS]'), 'Enabled');
-    // Add your view status logic here if needed
-  }
+    // Auto react message in private chats
+    if (process.env.AUTO_REACT_MESSAGE === 'yes' && msg.key.fromMe === false && msg.key.remoteJid.endsWith('@s.whatsapp.net')) {
+      try {
+        const emoji = process.env.EMOJI_LIKE || '💚'
+        await sock.sendMessage(msg.key.remoteJid, { react: { text: emoji, key: msg.key } })
+      } catch {}
+    }
 
-  if (process.env.AUTO_LIKE_STATUS === 'true') {
-    console.log(chalk.green('[AUTO LIKE STATUS]'), `Using emoji: ${process.env.LIKE_EMOJI}`);
-    // Add your like status logic here if needed
-  }
+    // Anti delete message
+    if (process.env.ANTI_DELETE_MESSAGE === 'yes') {
+      sock.ev.on('messages.delete', async (deletedMessages) => {
+        for (const deleted of deletedMessages) {
+          if (!deleted.key.fromMe) {
+            const chatId = deleted.key.remoteJid
+            const msgId = deleted.key.id
+            try {
+              await sock.sendMessage(chatId, {
+                text: `Message deleted detected! Original message:\n\n${deleted.message ? JSON.stringify(deleted.message) : '[unknown]'}`,
+                contextInfo: { mentionedJid: [deleted.key.participant || deleted.key.remoteJid] }
+              })
+            } catch {}
+          }
+        }
+      })
+    }
 
-  // Anti Delete
-  if (process.env.ANTI_DELETE === 'true') {
-    sock.ev.on('messages.delete', async (del) => {
-      console.log(chalk.red('[ANTI DELETE]'), 'A message was deleted:', del);
-    });
-  }
+    // TODO: Add more features here like chatbot, anti-call, etc.
+  })
 
-  console.log(chalk.cyanBright(`🤖 ${process.env.BOT_NAME} by ${process.env.OWNER_NAME} is running...`));
-};
+  sock.ev.on('call', async (call) => {
+    if (process.env.ANTICALL === 'yes') {
+      try {
+        await sock.rejectCall(call.callId)
+      } catch {}
+    }
+  })
 
-connect();
+  // Save auth state on changes
+  sock.ev.on('creds.update', saveState)
+}
+
+startBot()
