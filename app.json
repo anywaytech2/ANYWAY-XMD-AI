@@ -1,60 +1,151 @@
 {
   "name": "ANYWAY XMD",
-  "description": "ANYWAY XMD WhatsApp Bot developed by ANYWAY TECH",
-  "repository": "https://github.com/anywaytech2/ANYWAY-XMD-AI-",
-  "logo": "https://files.catbox.moe/oyw1oa.jpeg",
+  "description": "WhatsApp Multi Device Bot with auto read status, auto like, anti delete, auto react, emoji selector and more.",
   "keywords": [
     "whatsapp",
     "bot",
-    "anyway",
-    "xmd",
-    "multi-device"
+    "multi-device",
+    "baileys",
+    "auto-read",
+    "auto-like",
+    "anti-delete",
+    "auto-react"
   ],
+  "logo": "https://files.catbox.moe/oyw1oa.jpeg",
+  "repository": "https://github.com/anywaytech2/ANYWAY-XMD-AI-",
+  "success_url": "/",
+  "stack": "container",
   "env": {
     "BOT_NAME": {
-      "description": "Your Bot Name",
-      "value": "ANYWAY XMD"
+      "description": "Bot name",
+      "value": "ANYWAY XMD",
+      "required": true
     },
     "OWNER_NAME": {
-      "description": "Owner Name",
-      "value": "MR ANYWAY"
+      "description": "Owner name",
+      "value": "ANYWAY TECH",
+      "required": true
     },
     "OWNER_NUMBER": {
-      "description": "Owner WhatsApp Number (with country code)",
-      "value": "255678892560"
+      "description": "Owner phone number without + sign",
+      "value": "255678892560",
+      "required": true
     },
-    "PUBLIC_MODE": {
-      "description": "Enable public bot mode (true/false)",
-      "value": "true"
+    "SESSION_ID": {
+      "description": "Session ID from QR scan",
+      "value": "",
+      "required": true
     },
-    "AUTO_READ": {
-      "description": "Enable auto read for incoming messages",
-      "value": "true"
+    "HEROKU_API_KEY": {
+      "description": "Heroku API key",
+      "value": "",
+      "required": true
     },
-    "AUTO_REACT": {
-      "description": "Enable auto reaction to messages",
-      "value": "true"
+    "HEROKU_APP_NAME": {
+      "description": "Heroku app name",
+      "value": "",
+      "required": true
     },
-    "AUTO_VIEW_STATUS": {
-      "description": "Enable auto view of WhatsApp status",
-      "value": "true"
+    "PREFIX": {
+      "description": "Bot command prefix",
+      "value": ".",
+      "required": true
+    },
+    "AUTO_READ_STATUS": {
+      "description": "Enable auto read status (yes or no)",
+      "value": "yes",
+      "required": false
     },
     "AUTO_LIKE_STATUS": {
-      "description": "Enable auto like on viewed status",
-      "value": "true"
+      "description": "Enable auto like status (yes or no)",
+      "value": "yes",
+      "required": false
     },
-    "LIKE_EMOJI": {
-      "description": "Emoji to use for auto reactions and status likes",
-      "value": "😎"
+    "AUTO_REACT_MESSAGE": {
+      "description": "Enable auto react to messages (yes or no)",
+      "value": "yes",
+      "required": false
     },
-    "ANTI_DELETE": {
-      "description": "Enable anti-delete (recover deleted messages)",
-      "value": "true"
+    "EMOJI_LIKE": {
+      "description": "Emoji to use for liking status (choose one: 💚, ❤, 💞, 💯)",
+      "value": "💚",
+      "required": false
+    },
+    "ANTI_DELETE_MESSAGE": {
+      "description": "Enable anti-delete message feature (yes or no)",
+      "value": "yes",
+      "required": false
+    },
+    "AUTO_READ_MESSAGES": {
+      "description": "Auto read incoming messages (yes or no)",
+      "value": "yes",
+      "required": false
+    },
+    "PUBLIC_MODE": {
+      "description": "Make bot public (yes or no)",
+      "value": "yes",
+      "required": false
+    },
+    "AUTO_BLOCK": {
+      "description": "Automatically block insults in PM (yes or no)",
+      "value": "yes",
+      "required": false
+    },
+    "ANTICALL": {
+      "description": "Auto reject calls (yes or no)",
+      "value": "yes",
+      "required": false
+    },
+    "CHATBOT": {
+      "description": "Enable chatbot on DM (yes or no)",
+      "value": "no",
+      "required": false
+    },
+    "TALKING_BOT": {
+      "description": "Respond to voice notes (yes or no)",
+      "value": "no",
+      "required": false
+    },
+    "AUTO_DOWNLOAD_STATUS": {
+      "description": "Auto download status (yes or no)",
+      "value": "no",
+      "required": false
+    },
+    "PM_PERMIT": {
+      "description": "Restrict PM usage (yes or no)",
+      "value": "yes",
+      "required": false
+    },
+    "GROUP_CONTROL": {
+      "description": "Control group features like antilink, antispam (yes or no)",
+      "value": "no",
+      "required": false
+    },
+    "AUTO_STATUS_MSG": {
+      "description": "Custom status message",
+      "value": "viewed ✅",
+      "required": false
+    },
+    "STARTING_BOT_MESSAGE": {
+      "description": "Show starting bot message (yes or no)",
+      "value": "yes",
+      "required": true
+    },
+    "PRESENCE": {
+      "description": "Set bot presence: 1 = online, 2 = typing, 3 = recording, or blank",
+      "value": "1",
+      "required": false
     }
   },
-  "buildpacks": [
+  "formation": {
+    "worker": {
+      "quantity": 1,
+      "size": "standard-2x"
+    }
+  },
+  "addons": [
     {
-      "url": "heroku/nodejs"
+      "plan": "heroku-postgresql:essential-0"
     }
   ]
 }
