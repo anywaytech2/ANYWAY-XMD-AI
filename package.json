@@ -1,27 +1,19 @@
 {
   "name": "anyway-xmd-bot",
-  "version": "2.0.0",
-  "description": "WhatsApp Multi Device Bot - ANYWAY XMD with auto read, auto like, anti delete, emoji selector",
+  "version": "1.0.0",
+  "description": "ANYWAY XMD Multi-Device WhatsApp Bot",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
-  "keywords": [
-    "whatsapp",
-    "bot",
-    "multi-device",
-    "baileys",
-    "auto-read",
-    "auto-like",
-    "anti-delete",
-    "auto-react"
-  ],
   "author": "ANYWAY TECH",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
-    "@adiwajshing/baileys": "^4.4.0",
-    "dotenv": "^16.3.1",
-    "express": "^4.19.2",
-    "qrcode-terminal": "^0.12.0"
+    "baileys": "^6.6.0",
+    "chalk": "^5.2.0",
+    "figlet": "^1.5.2",
+    "dotenv": "^16.0.3",
+    "fs-extra": "^11.1.1",
+    "moment": "^2.29.4"
   }
 }
