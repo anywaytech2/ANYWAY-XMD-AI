@@ -1,110 +1,135 @@
 {
-  "name": "ANYWAY XMD",
-  "description": "WhatsApp Multi-Device Bot By ANYWAY TECH",
-  "logo": "https://files.catbox.moe/oyw1oa.jpeg",
-  "keywords": ["whatsapp", "bot", "multi-device", "anyway"],
+  "name": "RAHMANI-XMD",
+  "description": "Best whatsapp bot🔥 developed by Rahmani ",
+  "keywords": ["bot", "node", "baileys", "whatsapp"],
+  "logo": "https://files.catbox.moe/aktbgo.jpg",
   "repository": "https://github.com/anywaytech2/ANYWAY-XMD-AI-",
+  "succes_url": "/",
+  "stack": "heroku-24",
   "env": {
-    "BOT_NAME": {
-      "description": "Bot Name",
-      "value": "ANYWAY XMD"
-    },
-    "OWNER_NAME": {
-      "description": "Owner Name",
-      "value": "ANYWAY TECH"
-    },
-    "OWNER_NUMBER": {
-      "description": "Owner Number with country code",
-      "value": "255678892560"
-    },
-    "SESSION_ID": {
-      "description": "Your Session ID",
-      "required": true
-    },
-    "HEROKU_API_KEY": {
-      "description": "Your Heroku API Key",
-      "required": true
-    },
-    "HEROKU_APP_NAME": {
-      "description": "Your Heroku App Name",
-      "required": true
-    },
     "PREFIX": {
-      "description": "Command Prefix",
-      "value": "."
+      "description": "choose your prefix of bot",
+      "value": ".",
+      "required": true
     },
     "AUTO_READ_STATUS": {
-      "description": "Auto read status",
-      "value": "yes"
-    },
-    "AUTO_LIKE_STATUS": {
-      "description": "Auto like status",
-      "value": "yes"
-    },
-    "EMOJI_LIKE": {
-      "description": "Emoji to use for liking status",
-      "value": "💚"
-    },
-    "AUTO_REACT_MESSAGE": {
-      "description": "Auto react to messages",
-      "value": "yes"
-    },
-    "ANTI_DELETE_MESSAGE": {
-      "description": "Prevent message deletion",
-      "value": "yes"
-    },
-    "AUTO_READ_MESSAGES": {
-      "description": "Auto read messages",
-      "value": "yes"
-    },
-    "PUBLIC_MODE": {
-      "description": "Bot is in public mode",
-      "value": "yes"
-    },
-    "AUTO_BLOCK": {
-      "description": "Block unwanted numbers",
-      "value": "yes"
-    },
-    "ANTICALL": {
-      "description": "Block calls",
-      "value": "yes"
-    },
-    "CHATBOT": {
-      "description": "Enable Chatbot",
-      "value": "no"
-    },
-    "TALKING_BOT": {
-      "description": "Talking Bot",
-      "value": "no"
+      "description": "Your contact status will be read automatically(type yes to active or no to deactive ; don't write in capital letter)",
+      "value": "yes",
+      "required": false
     },
     "AUTO_DOWNLOAD_STATUS": {
-      "description": "Auto download statuses",
-      "value": "no"
+      "description": "Your contact status will be download automatically and send to you(type yes to active or no to deactive ; don't write in capital letter)",
+      "value": "no",
+      "required": false
+    },
+    "AUTO_READ": {
+      "description": "Your contact  will be read messages automatically(type yes to active or no to deactive ; don't write in capital letter)",
+      "value": "no",
+      "required": false
+    },
+    "AUTO_REACT": {
+      "description": "Enter yes for your bot to auto react",
+      "value": "no",
+      "required": false
+    },
+    "ANTICALL": {
+      "description": "Enter yes for your bot to auto reject calls",
+      "value": "no",
+      "required": false
+    },
+    "AUTO_REACT_STATUS": {
+      "description": "Enter yes for your bot to auto like status",
+      "value": "yes",
+      "required": true
     },
     "PM_PERMIT": {
-      "description": "Private Message Permit",
-      "value": "yes"
+      "description": "Other user can't use your bot in pm (type yes to active or no to deactive ; don't write in capital letter)",
+      "value": "no",
+      "required": false
     },
-    "GROUP_CONTROL": {
-      "description": "Enable group control",
-      "value": "no"
+    "BOT_NAME": {
+      "description": "put A name for your bot",
+      "value": "RAHMANI-XMD",
+      "required": false
     },
-    "AUTO_STATUS_MSG": {
-      "description": "Message for status seen",
-      "value": "viewed ✅"
+    "BOT_MENU_LINKS": {
+      "description": "add one or many link for your bot menu  ; eg : url1,url2,url3.....",
+      "value": "https://files.catbox.moe/aktbgo.jpg",
+      "required": false
+    },
+    "PUBLIC_MODE": {
+      "description": "type yes to put your bot on public mode or no to put it on private mod",
+      "value": "yes",
+      "required": false
+    },
+    "HEROKU_API_KEY": {
+      "description": "insert your heroku api-key (this is optionnal)",
+      "value": "HRKU-AAa4OvbTCLDEK8R9CIpjZDInu5zGLmQfqkA0oJNNSu2Q_____wNi617Z3aQe",
+      "required": false
+    },
+    "HEROKU_APP_NAME": {
+      "description": "insert your heroku APP NAME (put the name you put on top)",
+      "required": false
+    },
+    "SESSION_ID": {
+      "description": "put your session ID , the code you receive after scanning Qr code",
+      "value": "",
+      "required": true
+    },
+    "OWNER_NAME": {
+      "desc": "Your Name",
+      "required": false,
+      "value": "MR ANYWAY TECH"
+    },
+    "NUMERO_OWNER": {
+      "desc": "Your number , dont put '+' and put you area code(exemple of kenya '254')",
+      "required": true,
+      "value": "25567889XXXX"
+    },
+    "WARN_COUNT": {
+      "desc": "this is the limit of warn for warning commandes",
+      "required": false,
+      "value": "3"
     },
     "STARTING_BOT_MESSAGE": {
-      "description": "Show starting bot message",
-      "value": "yes"
+      "description": "if you don't want startting-bot-message put no else put yes",
+      "required": true,
+      "value": "no"
     },
     "PRESENCE": {
-      "description": "Choose 1=online, 2=typing, 3=recording",
-      "value": "1"
+      "description": "Mark your presence: 1 online. 2 typing a message. 3 recording . Or leave the field blank to indicate your real state.",
+      "value": "2",
+      "required": false
+    },
+    "ANTI_DELETE_MESSAGE": {
+      "description": "if you want to enable anti delete message put yes else put no",
+      "value": "no",
+      "required": true
+    },
+    "CHAT_BOT": {
+      "description": "Turn on the chatbot reply system (yes = active, no = deactive)",
+      "value": "no",
+      "required": false
+    },
+    "AUDIO_CHAT_BOT": {
+      "description": "Enable audio response in chatbot (yes = active, no = deactive)",
+      "value": "no",
+      "required": false
+    },
+    "STATUS_LIKE_EMOJI": {
+      "description": "Choose emoji for auto-liking viewed statuses (💚, ❤️, 💞, 💯 etc)",
+      "value": "💚"
     }
   },
   "buildpacks": [
     {
       "url": "heroku/nodejs"
+    },
+    {
+      "url": "https://github.com/clhuang/heroku-buildpack-webp-binaries.git"
+    },
+    {
+      "url": "https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest"
     }
   ]
 }
