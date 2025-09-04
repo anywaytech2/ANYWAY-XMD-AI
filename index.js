@@ -1,29 +1,40 @@
 // ANYWAY-XMD WHATSAPP BOT
-const { default: makeWASocket, useMultiFileAuthState, fetchLatestBaileysVersion, DisconnectReason, makeInMemoryStore } = require('@whiskeysockets/baileys');
+const { default: makeWASocket, useMultiFileAuthState, fetchLatestBaileysVersion, DisconnectReason } = require('@whiskeysockets/baileys');
 const { Boom } = require('@hapi/boom');
 const figlet = require('figlet');
 const chalk = require('chalk');
 const fs = require('fs');
 require('dotenv').config({ path: './config.env' });
 
-const SESSION_FILE = process.env.SESSION_FILE || 'auth_info.json';
+const SESSION_FILE = process.env.SESSION_FILE || 'auth_info';
 const EMOJI_REACT = process.env.EMOJI_REACT || '💚';
 
 // Display Bot Title
 console.clear();
 console.log(chalk.green(figlet.textSync(process.env.BOT_NAME || 'ANYWAY-XMD')));
-console.log(chalk.yellow(`🤖 Powered by MR ANYWAY TECH | Owner: ${process.env.OWNER_NAME}`));
+console.log(chalk.yellow(`🤖 Powered by ${process.env.OWNER_NAME || 'MR ANYWAY TECH'}`));
 
 async function startBot() {
     const { state, saveCreds } = await useMultiFileAuthState(SESSION_FILE);
-    const { version, isLatest } = await fetchLatestBaileysVersion();
+    const { version } = await fetchLatestBaileysVersion();
+
+    // If SESSION_ID is provided, preload it
+    if (process.env.SESSION_ID) {
+        try {
+            const creds = JSON.parse(Buffer.from(process.env.SESSION_ID, 'base64').toString());
+            fs.writeFileSync(`${SESSION_FILE}/creds.json`, JSON.stringify(creds, null, 2));
+            console.log(chalk.cyan('✅ SESSION_ID loaded from ENV.'));
+        } catch (err) {
+            console.log(chalk.red('❌ Invalid SESSION_ID in ENV. Using QR login...'));
+        }
+    }
+
     const sock = makeWASocket({
         version,
         auth: state,
-        printQRInTerminal: true,
+        printQRInTerminal: !process.env.SESSION_ID,
         markOnlineOnConnect: true,
-        syncFullHistory: false,
-        logger: require('pino')({ level: 'silent' }),
+        logger: require('pino')({ level: 'info' }),
         browser: ['ANYWAY-XMD', 'Safari', '1.0.0'],
     });
 
@@ -31,9 +42,7 @@ async function startBot() {
     if (process.env.AUTO_READ === 'true') {
         sock.ev.on('messages.upsert', async ({ messages }) => {
             for (let msg of messages) {
-                if (!msg.key.fromMe) {
-                    await sock.readMessages([msg.key]);
-                }
+                if (!msg.key.fromMe) await sock.readMessages([msg.key]);
             }
         });
     }
@@ -42,9 +51,7 @@ async function startBot() {
     if (process.env.ANTI_DELETE === 'true') {
         sock.ev.on('message-revoke-everyone', async (item) => {
             const msg = item.message;
-            if (msg) {
-                console.log(chalk.red(`⚠️ Message deleted:`), msg);
-            }
+            if (msg) console.log(chalk.red(`⚠️ Message deleted:`), msg);
         });
     }
 
@@ -60,16 +67,13 @@ async function startBot() {
         });
     }
 
-    // React to all messages with emoji
+    // React with emoji
     sock.ev.on('messages.upsert', async ({ messages }) => {
         for (let msg of messages) {
             if (!msg.key.fromMe && msg.message) {
                 try {
                     await sock.sendMessage(msg.key.remoteJid, {
-                        react: {
-                            text: EMOJI_REACT,
-                            key: msg.key
-                        }
+                        react: { text: EMOJI_REACT, key: msg.key }
                     });
                 } catch (err) {
                     console.log('Reaction error:', err.message);
@@ -78,7 +82,7 @@ async function startBot() {
         }
     });
 
-    // Handle connection events
+    // Connection updates
     sock.ev.on('connection.update', (update) => {
         const { connection, lastDisconnect } = update;
         if (connection === 'close') {
