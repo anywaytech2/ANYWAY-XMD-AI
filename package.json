@@ -1,23 +1,20 @@
 {
   "name": "anyway-xmd",
   "version": "1.0.0",
-  "description": "ANYWAY-XMD WhatsApp Bot powered by Baileys with QR and Pairing support",
+  "description": "ANYWAY-XMD WhatsApp Bot powered by Anyway Tech",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
-  "author": "MR ANYWAY TECH",
-  "license": "MIT",
   "engines": {
     "node": "18.x"
   },
   "dependencies": {
-    "@whiskeysockets/baileys": "^6.7.1",
     "@hapi/boom": "^10.0.1",
-    "pino": "^8.0.0",
-    "dotenv": "^16.0.3",
-    "figlet": "^1.6.0",
+    "@whiskeysockets/baileys": "^6.7.9",
     "chalk": "^5.3.0",
-    "node-fetch": "^3.3.1"
+    "dotenv": "^16.4.5",
+    "figlet": "^1.6.0",
+    "pino": "^9.3.2"
   }
 }
