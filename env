@@ -1,8 +1,18 @@
-SESSION_FILE=auth_info_baileys
-OWNER_NAME=MR ANYWAY TECH
-OWNER_NUMBER=255678892560
+# ANYWAY-XMD BOT CONFIG
+
+# Bot Info
 BOT_NAME=ANYWAY-XMD
+OWNER_NAME=MR ANYWAY TECH
+
+# Features
 AUTO_READ=true
-AUTO_VIEW_STATUS=true
 ANTI_DELETE=true
+AUTO_VIEW_STATUS=true
 EMOJI_REACT=💚
+
+# Session Handling
+# Ikiwa unatumia SESSION_ID (exported creds) → weka hapa kama base64
+# SESSION_ID=PASTE_YOUR_BASE64_SESSION_HERE
+
+# Local session file path
+SESSION_FILE=auth_info
