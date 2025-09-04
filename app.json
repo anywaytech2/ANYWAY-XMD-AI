@@ -18,7 +18,7 @@
       "required": false
     },
     "NUMERO_OWNER": {
-      "description": "Owner number (start with country code 255, no '+'). Default is your number.",
+      "description": "Owner number (start with 255, no '+')",
       "value": "255678892560",
       "required": true
     },
@@ -53,7 +53,7 @@
       "required": false
     },
     "STATUS_LIKE_EMOJI": {
-      "description": "Emoji for auto-react (💚, ❤️, 💞, 💯 etc)",
+      "description": "Emoji for auto-react (💚, ❤️, 💞, 💯)",
       "value": "💚",
       "required": false
     },
@@ -63,7 +63,7 @@
       "required": false
     },
     "PM_PERMIT": {
-      "description": "Other user can't use your bot in PM (yes/no)",
+      "description": "Other user can't use your bot in PM? (yes/no)",
       "value": "no",
       "required": false
     },
@@ -98,12 +98,12 @@
       "required": false
     },
     "BOT_MENU_LINKS": {
-      "description": "Add one or multiple links for your bot menu, separated by commas. Default link included.",
+      "description": "Links for bot menu, comma separated",
       "value": "https://files.catbox.moe/aktbgo.jpg",
       "required": false
     },
     "HEROKU_API_KEY": {
-      "description": "Your Heroku API key (optional)",
+      "description": "Heroku API key (optional)",
       "value": "",
       "required": false
     },
@@ -114,6 +114,18 @@
     }
   },
   "buildpacks": [
-    { "url": "heroku/nodejs" }
-  ]
+    {
+      "url": "heroku/nodejs"
+    }
+  ],
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "free"
+    },
+    "worker": {
+      "quantity": 1,
+      "size": "free"
+    }
+  }
 }
