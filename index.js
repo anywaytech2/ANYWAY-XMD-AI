@@ -9,7 +9,6 @@ require('dotenv').config({ path: './config.env' });
 const SESSION_FILE = process.env.SESSION_FILE || 'auth_info';
 const EMOJI_REACT = process.env.STATUS_LIKE_EMOJI || '💚';
 
-// Display Bot Title
 console.clear();
 console.log(chalk.green(figlet.textSync(process.env.BOT_NAME || 'ANYWAY-XMD')));
 console.log(chalk.yellow(`🤖 Powered by ${process.env.OWNER_NAME || 'MR ANYWAY TECH'}`));
@@ -38,20 +37,27 @@ async function startBot() {
         browser: ['ANYWAY-XMD', 'Safari', '1.0.0'],
     });
 
-    // Convert yes/no env vars to boolean
+    // ===== Convert yes/no env vars to boolean =====
     const autoRead = process.env.AUTO_READ?.toLowerCase() === 'yes';
     const antiDelete = process.env.ANTI_DELETE_MESSAGE?.toLowerCase() === 'yes';
     const autoViewStatus = process.env.AUTO_REACT_STATUS?.toLowerCase() === 'yes';
     const autoReact = process.env.AUTO_REACT?.toLowerCase() === 'yes';
+    const pmPermit = process.env.PM_PERMIT?.toLowerCase() === 'yes';
+    const publicMode = process.env.PUBLIC_MODE?.toLowerCase() === 'yes';
+    const chatBot = process.env.CHAT_BOT?.toLowerCase() === 'yes';
+    const audioChatBot = process.env.AUDIO_CHAT_BOT?.toLowerCase() === 'yes';
+    const startingMsg = process.env.STARTING_BOT_MESSAGE?.toLowerCase() === 'yes';
+    const presence = process.env.PRESENCE || '1'; // 1 online, 2 typing, 3 recording
+    const warnCount = parseInt(process.env.WARN_COUNT) || 3;
 
-    // ===== Features Inline Yes/No =====
+    // ===== Features Implementation =====
 
     // Auto Read Messages
     if (autoRead) sock.ev.on('messages.upsert', async ({ messages }) => {
         for (let msg of messages) if (!msg.key.fromMe) await sock.readMessages([msg.key]);
     });
 
-    // Anti Delete
+    // Anti Delete Message
     if (antiDelete) sock.ev.on('message-revoke-everyone', async (item) => {
         if (item.message) console.log(chalk.red('⚠️ Message deleted:'), item.message);
     });
@@ -74,7 +80,19 @@ async function startBot() {
         }
     });
 
-    // ===== Connection Updates =====
+    // BOT MENU LINKS
+    const menuLinks = (process.env.BOT_MENU_LINKS || '').split(',');
+    sock.ev.on('messages.upsert', async ({ messages }) => {
+        for (let msg of messages) {
+            if (!msg.key.fromMe && msg.message?.conversation?.toLowerCase() === '/menu') {
+                await sock.sendMessage(msg.key.remoteJid, {
+                    text: '🤖 Bot Menu Links:\n' + menuLinks.map((l,i) => `${i+1}. ${l}`).join('\n')
+                });
+            }
+        }
+    });
+
+    // Connection updates
     sock.ev.on('connection.update', (update) => {
         const { connection, lastDisconnect } = update;
         if (connection === 'close') {
@@ -85,6 +103,20 @@ async function startBot() {
     });
 
     sock.ev.on('creds.update', saveCreds);
+
+    // ===== Starting Bot Message =====
+    if (startingMsg) console.log(chalk.blue('🤖 Bot started successfully!'));
+
+    // ===== Presence Status =====
+    switch(presence) {
+        case '1': sock.presenceSubscribe(); break; // online
+        case '2': console.log('💬 Bot is typing...'); break;
+        case '3': console.log('🎤 Bot is recording...'); break;
+        default: break;
+    }
+
+    // Additional features placeholders: PM_PERMIT, PUBLIC_MODE, CHAT_BOT, AUDIO_CHAT_BOT
+    // Can be extended here according to your bot logic
 }
 
 startBot();
