@@ -1,21 +1,23 @@
 {
-  "name": "anyway-xmd",
+  "name": "ANYWAY-XMD",
   "version": "1.0.0",
   "description": "Best WhatsApp bot🔥 developed by MR ANYWAY TECH",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "web": "node server.js"
+    "heroku-postbuild": "npm install"
   },
   "engines": {
     "node": "20.x"
   },
   "dependencies": {
-    "@whiskeysockets/baileys": "^6.7.7",
-    "pino": "^8.15.0",
+    "@whiskeysockets/baileys": "^6.7.8",
+    "qrcode-terminal": "^0.12.0",
+    "pino": "^8.16.2",
+    "express": "^4.19.2",
     "dotenv": "^16.4.5",
+    "node-fetch": "^3.3.2",
     "chalk": "^5.3.0",
-    "figlet": "^1.6.0",
-    "express": "^4.19.2"
+    "figlet": "^1.7.0"
   }
 }
