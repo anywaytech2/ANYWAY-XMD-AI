@@ -1,6 +1,6 @@
 
  {
-  "name": "BELTAH-MD",
+  "name": "ANYWAY-XMD",
   "version": "2.0.0",
   "description": "",
   "main": "kingbeltah.js",
@@ -15,7 +15,7 @@
   "keywords": [
     "bot",
     "Baileys",
-    "Beltah-Md",
+    "anyway-xMd",
     "whatsapp",
     "whatsapp-bot",
     "Beltah"
@@ -155,3 +155,4 @@
     "youtubedl-core": "^4.11.7"
   }
   }
+
