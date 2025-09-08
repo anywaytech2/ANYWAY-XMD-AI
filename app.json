@@ -8,7 +8,7 @@
     "whatsapp"
   ],
   "logo": "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg",
-  "repository": "https://github.com/Beltah254/BLACK-MD",
+  "repository": "https://github.com/anywaytech2/ANYWAY-XMD-AI",
   "succes_url": "/",
   "stack": "container",
   "env": {
@@ -69,12 +69,12 @@
     },
     "ANTICALL_MSG": {
       "description": "Type your anticall message to always send when calls are declined.You can as well leave it blank",
-      "value": "> BELTAH-MD on board ||No calls allowed.",
+      "value": "> ANYWAY-XMD on board ||No calls allowed.",
       "required": false
     },
     "BOT_NAME": {
       "description": "Change this if you don't like my name",
-      "value": "BELTAH-MD",
+      "value": "ANYWAY-XMD",
       "required": true 
     },
     "GROUP_CONTROL": {
@@ -119,7 +119,7 @@
     },
     "NUMERO_OWNER": {
       "description": "Your phone number (exclude '+' and area code, e.g., '254114141192')",
-      "value": "254114141192",
+      "value": "255678892560",
       "required": false
     },
     "WARN_COUNT": {
@@ -170,5 +170,6 @@
     }
   ]
 }
+
 
 
