@@ -1,4 +1,4 @@
-//BELTAH TECH 254 
+//ANYWAY TECH 255 
 
 Consol.log 
   > remote.scrip-commands/beltah-plugins
@@ -10,4 +10,4 @@ error.
 
 
 
-//Hell 😁 I'm unstopable now.    BELTAH TECH 254 👻
+//Hell 😁 I'm unstopable now.    ANYWAY TECH 255 😎
