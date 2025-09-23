@@ -1,6 +1,6 @@
 {
-  "name": "ANYWAY-X𝗠𝗗 ",
-  "description": "THIS IS OLD VERSION OF ANYWAY-XMD  MAKE SURE YOU UPDATE YOUR BOT ONCE CONNECTED🤖✅👻",
+  "name": "ANYWAY-XMD",
+  "description": "THIS IS OLD VERSION OF ANYWAY-XMD. MAKE SURE YOU UPDATE YOUR BOT ONCE CONNECTED 🤖✅👻",
   "keywords": [
     "bot",
     "node",
@@ -9,81 +9,81 @@
   ],
   "logo": "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg",
   "repository": "https://github.com/anywaytech2/ANYWAY-XMD-AI",
-  "succes_url": "/",
-  "stack": "container",
+  "success_url": "/",
+  "stack": "heroku-22",
   "env": {
-        "PREFIX": {
+    "PREFIX": {
       "description": "Choose your bot's prefix",
       "value": ".",
       "required": true
     },
     "AUTO_READ_STATUS": {
-      "description": "Your contact status will be read automatically (type 'yes' to activate or 'no' to deactivate; don't write in capital letters)",
+      "description": "Your contact status will be read automatically",
       "value": "yes",
       "required": false
     },
     "GREET": {
-      "description": "when enabled it automatically sends  greeting message to members in your pm",
+      "description": "Send greeting message to members in your pm",
       "value": "no",
       "required": false
     },
     "AUTO_LIKE_STATUS": {
-      "description": "Your contact status will be liked automatically (type 'yes' to activate or 'no' to deactivate; don't write in capital letters)",
+      "description": "Auto like statuses",
       "value": "yes",
       "required": false
     },
     "AUTOBIO": {
-      "description": "This automatically update your bio status.Always make sure you insert your OWNER_NAME since it uses that to update your bio name status",
+      "description": "Automatically update your bio status",
       "value": "yes",
       "required": false
     },
-        "CHATBOT": {
-      "description": "When activated, It will chat with everyone on your dm",
+    "CHATBOT": {
+      "description": "Enable chatbot in DMs",
       "value": "no",
       "required": false
     },
-        "TALKING_BOT": {
-      "description": "Bot will listen to voice notes and responds to them",
+    "TALKING_BOT": {
+      "description": "Respond to voice notes",
       "value": "no",
       "required": false
     },
     "AUTO_DOWNLOAD_STATUS": {
-      "description": "Your contact status will be downloaded automatically and sent to you (type 'yes' to activate or 'no' to deactivate; don't write in capital letters)",
+      "description": "Download statuses automatically",
       "value": "no",
       "required": false
     },
     "PM_PERMIT": {
-      "description": "Restrict other users from using your bot in private messages (type 'yes' to activate or 'no' to deactivate; don't write in capital letters)",
+      "description": "Restrict private usage",
       "value": "yes",
       "required": false
     },
     "AUTO_STATUS_MSG": {
-      "description": "type your genuine status message",
+      "description": "Your genuine status message",
       "value": "viewed ✅✅",
       "required": false
     },
     "AUTO_STATUS_REPLY": {
-      "description": "type your genuine status message",
+      "description": "Reply to status views",
       "value": "no",
       "required": false
     },
     "ANTICALL_MSG": {
-      "description": "Type your anticall message to always send when calls are declined.You can as well leave it blank",
-      "value": "> ANYWAY-XMD on board ||No calls allowed.",
+      "description": "Message when calls are declined",
+      "value": "> ANYWAY-XMD on board || No calls allowed.",
       "required": false
     },
     "BOT_NAME": {
-      "description": "Change this if you don't like my name",
+      "description": "Bot name",
       "value": "ANYWAY-XMD",
-      "required": true 
+      "required": true
     },
     "GROUP_CONTROL": {
-      "description": "urs if you want bot yo control group features such as antilink,antispam,antibad",
+      "description": "Enable group controls",
       "value": "no",
       "required": false
     },
     "PUBLIC_MODE": {
-      "description": "Set 'yes' to make your bot public or 'no' to keep it private",
+      "description": "Make bot public or private",
       "value": "yes",
       "required": false
     },
@@ -98,62 +98,62 @@
       "required": true
     },
     "SESSION_ID": {
-      "description": "Enter your session ID, the code you receive after scanning the QR code",
+      "description": "Session ID after scanning QR code",
       "value": "",
       "required": true
     },
     "OWNER_NAME": {
-      "description": "don't you have a name bro.Insert your name here!!",
+      "description": "Your name",
       "value": "",
       "required": true
     },
     "URL": {
-      "description": "Change this image and input yours",
+      "description": "Profile image URL",
       "value": "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg",
       "required": true
     },
     "AUTO_READ_MESSAGES": {
-      "description": "yes toactivate no to deactivate",
+      "description": "Read messages automatically",
       "value": "no",
-      "required": false  
+      "required": false
     },
     "NUMERO_OWNER": {
-      "description": "Your phone number (exclude '+' and area code, e.g., '254114141192')",
+      "description": "Your phone number (exclude '+')",
       "value": "255678892560",
       "required": false
     },
     "WARN_COUNT": {
-      "description": "Set the warning limit for warning commands",
+      "description": "Warning limit",
       "value": "10",
       "required": false
     },
     "STARTING_BOT_MESSAGE": {
-      "description": "Set 'yes' to display a starting bot message or 'no' to disable it",
+      "description": "Show start bot message",
       "value": "yes",
       "required": true
     },
     "PRESENCE": {
-      "description": "Mark your presence: 1 for online, 2 for typing, 3 for recording, or leave blank for real state",
+      "description": "1=online, 2=typing, 3=recording",
       "value": "",
       "required": false
     },
     "ANTI_DELETE_MESSAGE": {
-      "description": "Enable anti-delete message (set 'yes' to activate or 'no' to deactivate)",
+      "description": "Enable anti-delete",
       "value": "yes",
       "required": false
     },
     "ANTICALL": {
-      "description": "Automatically decline incoming calls (set 'on' to activate or 'off' to deactivate)",
+      "description": "Decline incoming calls",
       "value": "yes",
       "required": false
     },
     "AUTO_BLOCK": {
-      "description": "Type true if you want bot to automatically  block those who insult you in your dm ",
+      "description": "Block users who insult",
       "value": "yes",
       "required": false
     },
     "AUTO_REACTION": {
-      "description": "Set 'yes' to enable bot reactions to messages in private chats",
+      "description": "Enable bot reactions",
       "value": "no",
       "required": false
     }
@@ -161,7 +161,7 @@
   "formation": {
     "worker": {
       "quantity": 1,
-      "size": "standard-2x"
+      "size": "free"
     }
   },
   "addons": [
@@ -170,6 +170,3 @@
     }
   ]
 }
-
-
-
